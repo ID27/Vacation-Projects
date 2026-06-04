@@ -1,7 +1,7 @@
 const db = require("../db");
 
 const getAllStudents = (req, res) => {
-  const sql = "SELECT s.first_name, s.last_name, s.date_of_birth, s.gender, l.level_name, d.department_name FROM students s JOIN department d ON s.department_id = d.department_id JOIN level l ON s.level_id = l.level_id";
+  const sql = "SELECT s.first_name, s.last_name, s.date_of_birth, s.gender, s.email, s.phone, l.level_name, d.department_name FROM students s JOIN department d ON s.department_id = d.department_id JOIN level l ON s.level_id = l.level_id";
 
   db.query(sql, (err, results) => {
     if (err) {
