@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 function Students() {
   const [students, setStudents] = useState([]);
+  const [editingStudent, setEditingStudent] = useState(null);
 
 const fetchStudents = async () => {
   try {
@@ -65,48 +66,76 @@ useEffect(() => {
 
 console.log("Current students state:", students);
 
-  return (
-    <div>
-      <h1>Students</h1>
+return (
+  <div className="students-page">
+    <section className="form-card">
+      <StudentForm
+        onStudentAdded={fetchStudents}
+        editingStudent={editingStudent}
+        setEditingStudent={setEditingStudent}
+      />
+    </section>
 
-      <StudentForm onStudentAdded={fetchStudents} />
+    <section className="table-card">
+      <div className="table-header">
+        <div>
+          <h2>Students</h2>
+          <p>{students.length} student(s) registered</p>
+        </div>
+      </div>
 
-      <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Full Name</th>
-            <th>Gender</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Department</th>
-            <th>Level</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {students.map((student) => (
-            <tr key={student.student_id}>
-              <td>{student.student_id}</td>
-              <td>
-                {student.first_name} {student.last_name}
-              </td>
-              <td>{student.gender}</td>
-              <td>{student.email}</td>
-              <td>{student.phone}</td>
-              <td>{student.department_name}</td>
-              <td>{student.level_name}</td>
-              <td><button onClick={() => handleDeleteStudent(student.student_id)}>
-                  Delete
-                </button>
-              </td>
+      <div className="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Full Name</th>
+              <th>Gender</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Department</th>
+              <th>Level</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+          </thead>
+
+          <tbody>
+            {students.map((student) => (
+              <tr key={student.student_id}>
+                <td>{student.student_id}</td>
+                <td>
+                  <strong>
+                    {student.first_name} {student.last_name}
+                  </strong>
+                </td>
+                <td>{student.gender}</td>
+                <td>{student.email}</td>
+                <td>{student.phone}</td>
+                <td>{student.department_name}</td>
+                <td>{student.level_name}</td>
+                <td className="actions">
+                  <button
+                    className="edit-btn"
+                    onClick={() => setEditingStudent(student)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteStudent(student.student_id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+);
 }
 
 export default Students;
